@@ -201,6 +201,8 @@ def filter_clinical_trials(df, column_name, search_term):
 # Route to handle POST requests for data filtering
 @app.route('/filter', methods=['OPTIONS', 'POST'])
 def filter_data_route():
+    #Return a sample response to check vercel deployment
+    return jsonify({'message': 'Hello from the server!'})
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
