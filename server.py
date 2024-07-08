@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 import pandas as pd
 from flask_cors import CORS
@@ -10,13 +9,19 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import numpy as np
+from waitress import serve
+from collections import OrderedDict
 
 # app = Flask(__name__)
 app = Flask(__name__, static_folder="../client/build", static_url_path="/")
+app.json.sort_keys = False
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for all origins on all routes
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
+
+# Set default font family for Matplotlib
+matplotlib.rcParams['font.family'] = 'Arial'
 
 # Function to load data from Excel file
 def load_data(file_path):
@@ -43,7 +48,7 @@ def load_data(file_path):
         file_path = r'data\UK_MA.xlsx'
     file_path = os.path.join(path, file_path)
     df = pd.read_excel(file_path)
-    df['Dateofdecision'] = pd.to_datetime(df['Date of decision'], errors='coerce')
+    df['Date of decision'] = pd.to_datetime(df['Date of decision'], errors='coerce')
     return df
 
 # Function to filter data based on criteria
@@ -53,24 +58,26 @@ def filter_data(df, column_name, search_term, start_date, end_date):
     if start_date and end_date:
         start_date = pd.to_datetime(start_date, errors='coerce')
         end_date = pd.to_datetime(end_date, errors='coerce')
-        df = df[(df['Dateofdecision'] >= start_date) & (df['Dateofdecision'] <= end_date)]
+        df = df[(df['Date of decision'] >= start_date) & (df['Date of decision'] <= end_date)]
     elif start_date:
         start_date = pd.to_datetime(start_date, errors='coerce')
-        df = df[df['Dateofdecision'] >= start_date]
+        df = df[df['Date of decision'] >= start_date]
     elif end_date:
         end_date = pd.to_datetime(end_date, errors='coerce')
-        df = df[df['Dateofdecision'] <= end_date]
+        df = df[df['Date of decision'] <= end_date]
 
     if column_name and search_term:
         df = df[df[column_name].astype(str).str.contains(search_term, case=False, na=False)]
 
     logging.debug(f"Filtered data: {df.head()}")
 
-    df = df.drop(columns=['Dateofdecision'])
+    df = df.drop(columns=['Date of decision'])
     df = df.dropna(axis=1, how='all')  # Remove columns with all missing values
     df = df.where(pd.notnull(df), None)  # Replace NaN with None
+
+    result = [OrderedDict(zip(df.columns, row)) for row in df.values]
+
     
-    result = df.to_dict(orient='records')
     # Determine the status column
     st = ''
     if "Market Authorization Status" in df.columns:
@@ -157,6 +164,11 @@ def filter_data(df, column_name, search_term, start_date, end_date):
             bar_buf.seek(0)
             bar_chart = base64.b64encode(bar_buf.getvalue()).decode('utf-8')
             plt.close(fig)
+            legend=ax.legend()
+            num_legends=len(legend.get_texts())
+            if num_legends>9:
+                bar_chart=None
+                donut_chart=None
         else: 
             bar_chart=None
     else:
@@ -183,8 +195,7 @@ def filter_clinical_trials(df, column_name, search_term):
         df = df[df[column_name].astype(str).str.contains(search_term, case=False, na=False)]
     df = df.dropna(axis=1, how='all')  # Remove columns with all missing values
     df = df.where(pd.notnull(df), None)  # Replace NaN with None
-    
-    result = df.to_dict(orient='records')
+    result = [OrderedDict(zip(df.columns, row)) for row in df.values]
     return result
 
 # Route to handle POST requests for data filtering
@@ -246,8 +257,6 @@ def filter_clinical_trials_route():
     column_name = data.get('column_name', '')
     search_term = data.get('search_term', '')
 
-
-    
     try:
         df = load_clinical_trials_data()
         results = filter_clinical_trials(df, column_name, search_term)
@@ -256,5 +265,32 @@ def filter_clinical_trials_route():
         logging.error(f"Error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/autosuggest', methods=['GET'])
+def autosuggest():
+    query = request.args.get('query', '')
+    column_name = request.args.get('column_name', 'Product Name')
+    file_path = request.args.get('file_path', '')
+
+    if not file_path:
+        return jsonify([])  # Return an empty list if no file path is provided
+
+    try:
+        df = load_data(file_path)
+        if query and column_name in df.columns:
+            results = df[df[column_name].astype(str).str.contains(query, case=False, na=False)]
+            suggestions = results[column_name].dropna().unique().tolist()
+            return jsonify(suggestions[:10])  # Return only the top 10 suggestions
+        return jsonify([])
+    except Exception as e:
+        logging.error(f"Error occurred: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+
+mode = 'dev'
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    if mode == 'dev':
+        app.run(debug=True)
+    elif mode == 'prod':
+        serve(app,host="0.0.0.0",port=5000,threads=7)
