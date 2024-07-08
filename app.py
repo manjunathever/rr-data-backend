@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import pandas as pd
-# from flask_cors import CORS
+from flask_cors import CORS
 import os
 import logging
 # import matplotlib
@@ -15,7 +15,7 @@ from collections import OrderedDict
 # app = Flask(__name__)
 app = Flask(__name__, static_folder="../client/build", static_url_path="/")
 app.json.sort_keys = False
-# CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for all origins on all routes
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for all origins on all routes
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -174,7 +174,7 @@ def filter_data(df, column_name, search_term, start_date, end_date):
     # else:
     #     donut_chart=None
     #     bar_chart=None
-    
+
     donut_chart=None
     bar_chart=None
 
