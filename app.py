@@ -48,7 +48,7 @@ def load_data(file_path):
         file_path = 'data/UK_MA.xlsx'
     file_path = os.path.join(path, file_path)
     df = pd.read_excel(file_path)
-    df['Date of decision'] = pd.to_datetime(df['Date of decision'], errors='coerce')
+    df['Date of decision'] = pd.to_datetime(df['Date of decision'], dayfirst=True, errors='coerce')
     return df
 
 # Function to filter data based on criteria
@@ -71,7 +71,7 @@ def filter_data(df, column_name, search_term, start_date, end_date):
 
     logging.debug(f"Filtered data: {df.head()}")
 
-    df = df.drop(columns=['Date of decision'])
+    # df = df.drop(columns=['Date of decision'])
     df = df.dropna(axis=1, how='all')  # Remove columns with all missing values
     df = df.where(pd.notnull(df), None)  # Replace NaN with None
 
