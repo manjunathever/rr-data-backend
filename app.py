@@ -27,25 +27,25 @@ logging.basicConfig(level=logging.DEBUG)
 def load_data(file_path):
     path = os.getcwd()
     if file_path == '1':
-        file_path = r'data\Germany_MA.xlsx'
+        file_path = 'data/Germany_MA.xlsx'
     elif file_path == '2':
-        file_path = r'data\Germany_Reimbursement.xlsx'
+        file_path = 'data/Germany_Reimbursement.xlsx'
     elif file_path == '3':
-        file_path = r'data\Europe_MA.xlsx'
+        file_path = 'data/Europe_MA.xlsx'
     elif file_path == '4':
-        file_path = r'data\USA_MA.xlsx'
+        file_path = 'data/USA_MA.xlsx'
     elif file_path == '5':
-        file_path = r'data\Scotland_MA.xlsx'
+        file_path = 'data/Scotland_MA.xlsx'
     elif file_path == '6':
-        file_path = r'data\Scotland_Reimbursement.xlsx'
+        file_path = 'data/Scotland_Reimbursement.xlsx'
     elif file_path == '7':
-        file_path = r'data\Australia_MA.xlsx'
+        file_path = 'data/Australia_MA.xlsx'
     elif file_path == '8':
-        file_path = r'data\Australia_Reimbursement.xlsx'
+        file_path = 'data/Australia_Reimbursement.xlsx'
     elif file_path == "9":
-        file_path = r'data\UK_Reimbursement.xlsx'
+        file_path = 'data/UK_Reimbursement.xlsx'
     else:
-        file_path = r'data\UK_MA.xlsx'
+        file_path = 'data/UK_MA.xlsx'
     file_path = os.path.join(path, file_path)
     df = pd.read_excel(file_path)
     df['Date of decision'] = pd.to_datetime(df['Date of decision'], errors='coerce')
@@ -186,7 +186,7 @@ def filter_data(df, column_name, search_term, start_date, end_date):
 
 def load_clinical_trials_data():
     path = os.getcwd()
-    file_path = r'data\Clinical_Trials.xlsx'
+    file_path = 'data/Clinical_Trials.xlsx'
     file_path = os.path.join(path, file_path)
     df = pd.read_excel(file_path)
     # df['StartDate'] = pd.to_datetime(df['Start Date'], errors='coerce')
