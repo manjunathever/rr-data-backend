@@ -202,7 +202,7 @@ def filter_clinical_trials(df, column_name, search_term):
     return result
 
 # Route to handle POST requests for data filtering
-@app.route('/filter', methods=['GET'])
+@app.route('/filter', methods=['OPTIONS', 'POST'])
 def filter_data_route():
 
     # if request.method == 'OPTIONS':
@@ -231,7 +231,7 @@ def filter_data_route():
         logging.error(f"Error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
     
-@app.route('/get_columns', methods=['GET'])
+@app.route('/get_columns', methods=['POST'])
 def get_columns():
     data = request.get_json()
     file_path = data.get('file_path')
@@ -247,7 +247,7 @@ def get_columns():
         logging.error(f"Error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
     
-@app.route('/clinical/', methods=['GET'])
+@app.route('/clinical/', methods=['POST'])
 def filter_clinical_trials_route():
     # if request.method == 'OPTIONS':
     #     headers = {
