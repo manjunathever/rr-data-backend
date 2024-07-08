@@ -15,7 +15,7 @@ from collections import OrderedDict
 # app = Flask(__name__)
 app = Flask(__name__, static_folder="../client/build", static_url_path="/")
 app.json.sort_keys = False
-CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for all origins on all routes
+CORS(app, resources={r"/*": {"origins": "https://rr-data-frontend.vercel.app"}})  # Allow CORS for all origins on all routes
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
