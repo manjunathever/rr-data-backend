@@ -205,13 +205,13 @@ def filter_clinical_trials(df, column_name, search_term):
 @app.route('/filter', methods=['OPTIONS', 'POST'])
 def filter_data_route():
 
-    # if request.method == 'OPTIONS':
-    #     headers = {
-    #         'Access-Control-Allow-Origin': '*',
-    #         'Access-Control-Allow-Methods': 'POST',
-    #         'Access-Control-Allow-Headers': 'Content-Type'
-    #     }
-    #     return '', 200, headers
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+        return '', 200, headers
     
     data = request.get_json()
     file_path = data.get('file_path')
@@ -249,13 +249,13 @@ def get_columns():
     
 @app.route('/clinical/', methods=['POST'])
 def filter_clinical_trials_route():
-    # if request.method == 'OPTIONS':
-    #     headers = {
-    #         'Access-Control-Allow-Origin': '*',
-    #         'Access-Control-Allow-Methods': 'POST',
-    #         'Access-Control-Allow-Headers': 'Content-Type'
-    #     }
-    #     return '', 200, headers
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+        return '', 200, headers
 
     data = request.get_json()
     column_name = data.get('column_name', '')
@@ -289,6 +289,12 @@ def autosuggest():
         logging.error(f"Error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 mode = 'dev'
