@@ -3,7 +3,7 @@ import pandas as pd
 from flask_cors import CORS
 import os
 import logging
-# import matplotlib
+import matplotlib
 # matplotlib.use('Agg')  # Use a non-GUI backend
 import matplotlib.pyplot as plt
 import io
