@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import pandas as pd
 from flask_cors import CORS
 import os
@@ -300,6 +300,17 @@ def filter_clinical_trials_route():
     except Exception as e:
         logging.error(f"Error occurred: {str(e)}")
         return jsonify({'error': str(e)}), 500
+    
+DATA_DIR = 'data'
+DATA_FILE = 'combined_data.json'
+
+@app.route('/combined_data', methods=['GET'])
+# @cache.cached(timeout=60)  # Cache response for 60 seconds
+def get_combined_data():
+    try:
+        return send_from_directory(DATA_DIR, DATA_FILE)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
 
 # @app.route('/autosuggest', methods=['GET'])
 # def autosuggest():
