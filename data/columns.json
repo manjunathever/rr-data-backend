@@ -1,0 +1,124 @@
+{
+    "Australia_MA.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Manufacturer"
+    ],
+    "Australia_Reimbursement.xlsx": [
+        "Product Name",
+        "Active Substance"
+    ],
+    "Brazil_MA.xlsx": [
+        "Product Name",
+        "Active Substance"
+    ],
+    "Canada_MA.xlsx": [
+        "Product Name"
+    ],
+    "Canada_Reimbursement.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+        
+        
+    ],
+    "Clinical_Trials.xlsx": [
+        "NCT Number",
+        "Study Title",
+        "Study URL",
+        "Study Status",
+        "Brief Summary",
+        "Study Results",
+        "Conditions",
+        "Interventions",
+        "Primary Outcome Measures",
+        "Secondary Outcome Measures",
+        "Other Outcome Measures",
+        "Phases",
+        "Enrollment",
+        "Study Type",
+        "Study Documents"
+    ],
+    "Europe_MA.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+        
+    ],
+    "France_MA.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+        
+        
+    ],
+    "France_Reimbursement.xlsx": [
+        "Product Name"
+    ],
+    "Germany_MA.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+        
+    ],
+    "Germany_Reimbursement.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+        
+    ],
+    "Italy_MA.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+    ],
+    "Scotland_MA.xlsx": [
+        "Product Name",
+        "Active Substance"
+        
+    ],
+    "Scotland_Reimbursement.xlsx": [
+        "Product Name",
+        "Active Substance"
+        
+    ],
+    "South Korea_MA.xlsx": [
+        "Product Name",
+        "Active Substance",
+        "Therapeutic Area"
+    ],
+    "Spain_MA.xlsx": [
+        "Product Name",
+        "Active Substance"
+    ],
+    "Spain_Reimbursement.xlsx": [
+        "Product Name",
+        "Active Substance"
+    ],
+    "Sweden_MA.xlsx": [
+        "Product Name",
+        "Active Substance"
+    ],
+    "Sweden_Reimbursement.xlsx": [
+        "Product Name",
+        "Active Substance"
+        
+        
+    ],
+    "UK_MA.xlsx": [
+        "Product Name",
+        "Active Substance"
+        
+        
+    ],
+    "UK_Reimbursement.xlsx": [
+        "Product Name",
+        "Therapeutic Area"
+        
+    ],
+    "USA_MA.xlsx": [
+        "Product Name",
+        "Active Substance"
+    
+    ]
+}
